@@ -35,6 +35,7 @@ class CreateInvoiceController extends Controller
         ]);
         $totalFinalCost = 0;
         $status='Pending';
+        $itemCount=0;
 
         // Create the invoice
         $invoice = Invoice::create([
@@ -66,11 +67,23 @@ class CreateInvoiceController extends Controller
             Invoice::where('id',$invoice->id)->update(['totalFinalCost' => $totalFinalCost]);
 
             $invoice->items()->save($item);
+            // Increment item count
+            $itemCount++;
         }
+
+        // Fetch customer details
+        $customer = Customer::find($data['customer_id']);
+
 //// Send email to the customer
         $data["email"] = "hasanthamadushan32@gmail.com";
-        $data["title"] = "Invoice Details";
-        $data["content"] = $totalFinalCost;
+//        $data["email"] = $customer->email;
+        $data["customer_name"] =$customer->first_name;
+        $data["invoice_number"] =$data['invoice_number'];
+//        $data["date_of_transaction"] = $data
+        $data["Quantity"] = $itemCount;
+        $data["Transaction_amount"] = $totalFinalCost;
+//        $data["Invoice for "+ $invoice->invoice_number];
+        $data["title"] = "Invoice for ".$invoice->invoice_number;
 
         Mail::send('mail.Test_mail', $data, function($message) use ($data) {
             $message->to($data["email"])
