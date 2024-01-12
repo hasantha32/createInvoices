@@ -21,6 +21,8 @@ class CreateItemsTable extends Migration
             $table->integer('quantity');
             $table->integer('item_wise_discount');
             $table->string('unit_price');
+//            $table->string('final_cost');
+
             $table->timestamps();
         });
 
