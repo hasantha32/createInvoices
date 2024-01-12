@@ -22,7 +22,8 @@ class CreateInvoiceController extends Controller
             'invoice_number' => 'required|integer',
             'due_date' => 'required|string',
             'additional_note' => 'required|string',
-            'status' => 'required|string',
+            'status' => 'string', // Remove 'required'
+//            'status' => 'required|string',
             'items' => 'required|array|min:1', // Validate items as an array and at least one item
             'items.*.item_name' => 'required|string',
             'items.*.quantity' => 'required|integer',
@@ -33,6 +34,7 @@ class CreateInvoiceController extends Controller
 
         ]);
         $totalFinalCost = 0;
+        $status='Pending';
 
         // Create the invoice
         $invoice = Invoice::create([
@@ -40,7 +42,7 @@ class CreateInvoiceController extends Controller
             'invoice_number' => $data['invoice_number'],
             'due_date' => $data['due_date'],
             'additional_note' => $data['additional_note'],
-            'status' => $data['status'],
+            'status' => $status,
             'customer_id' => $data['customer_id'], // Add customer_id to the invoice creation
         ]);
 
