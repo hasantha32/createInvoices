@@ -20,6 +20,7 @@ class CreateInvoicesTable extends Migration
             $table->string('due_date');
             $table->string('additional_note');
             $table->string('status');
+            $table->string('totalFinalCost')->default('0.00'); // Set default value
 
             $table->unsignedBigInteger('customer_id'); // Add customer_id field
             $table->foreign('customer_id')->references('id')->on('customers');

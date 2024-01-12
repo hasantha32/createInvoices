@@ -32,6 +32,7 @@ class CreateInvoiceController extends Controller
             'customer_id' => 'required|exists:customers,id',
 
         ]);
+        $totalFinalCost = 0;
 
         // Create the invoice
         $invoice = Invoice::create([
@@ -55,18 +56,19 @@ class CreateInvoiceController extends Controller
             // Calculate final cost for the item
             $finalCost = $itemData['quantity'] * ($itemData['unit_price'] - ($itemData['unit_price'] * $itemData['item_wise_discount'] / 100));
 
-//            $item->final_cost = $finalCost; // Assuming there's a 'final_cost' column in 'items' table
+            $item->final_cost = $finalCost;
+
+            // Add the final cost of the items to the total final cost for the invoice
+            $totalFinalCost += $finalCost;
+//            dump($totalFinalCost);
+            Invoice::where('id',$invoice->id)->update(['totalFinalCost' => $totalFinalCost]);
 
             $invoice->items()->save($item);
         }
 //// Send email to the customer
-//        $customer = Customer::find($data['customer_id']);
-//        $invoiceTitle = $data['invoice_title'];
-
         $data["email"] = "hasanthamadushan32@gmail.com";
         $data["title"] = "Invoice Details";
-        $data["content"] = $itemData['quantity'];
-
+        $data["content"] = $totalFinalCost;
 
         Mail::send('mail.Test_mail', $data, function($message) use ($data) {
             $message->to($data["email"])
