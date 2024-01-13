@@ -79,11 +79,15 @@ class CreateInvoiceController extends Controller
 //        $data["email"] = $customer->email;
         $data["customer_name"] =$customer->first_name;
         $data["invoice_number"] =$data['invoice_number'];
-//        $data["date_of_transaction"] = $data
+//        $data["date_of_transaction"] = now();
+        $data["date_of_transaction"] = today()->toDateString();
+
         $data["Quantity"] = $itemCount;
         $data["Transaction_amount"] = $totalFinalCost;
 //        $data["Invoice for "+ $invoice->invoice_number];
-        $data["title"] = "Invoice for ".$invoice->invoice_number;
+        $data["title"] = "Invoice for ".$invoice->invoice_title."-".$invoice->invoice_number;
+        $data["invoice_title"] = $invoice->invoice_title;
+        $data["Description_of_product"] = $invoice->additional_note;
 
         Mail::send('mail.Test_mail', $data, function($message) use ($data) {
             $message->to($data["email"])
