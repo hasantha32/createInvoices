@@ -21,7 +21,7 @@ class CreateInvoiceController extends Controller
             'invoice_title' => 'required|string',
             'invoice_number' => 'required|integer',
             'due_date' => 'required|string',
-            'additional_note' => 'required|string',
+            'additional_note' => 'nullable|string',//additional_not can be null
             'status' => 'string', // Remove 'required'
 //            'status' => 'required|string',
             'items' => 'required|array|min:1', // Validate items as an array and at least one item

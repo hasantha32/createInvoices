@@ -18,7 +18,7 @@ class CreateInvoicesTable extends Migration
             $table->string('invoice_title');
             $table->integer('invoice_number');
             $table->string('due_date');
-            $table->string('additional_note');
+            $table->string('additional_note')->nullable();
             $table->string('status')->default('Pending');
             $table->string('totalFinalCost')->default('0.00'); // Set default value
 
