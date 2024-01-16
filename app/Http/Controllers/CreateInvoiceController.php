@@ -96,4 +96,58 @@ class CreateInvoiceController extends Controller
 
         return response()->json(['message' => 'Invoice created with items'], 201);
     }
+
+    //update the status
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:Pending,Overdue,Paid',
+        ]);
+
+        $affectedRows = Invoice::where('id', $id)
+            ->update(['status' => $request->input('status')]);
+        if ($affectedRows == 0) {
+            return response()->json(['message' => 'Invoice not found'], 404);
+        }
+
+        return response()->json(['message' => 'Invoice status updated successfully'], 200);
+    }
+
+
+
+//    public function updateStatus(Request $request, $id)
+//    {
+//        $request->validate([
+//            'status' => 'required|in:Pending,Paid,Overdue',
+//        ]);
+//
+//        $invoice = Invoice::find($id);
+//
+//        if (!$invoice) {
+//            return response()->json(['message' => 'Invoice not found'], 404);
+//        }
+//
+//        $invoice->updateStatus($request->input('status'));
+//
+//        return response()->json(['message' => 'Invoice status updated successfully'], 200);
+//
+//    }
+
+
+//    public function updateStatus(Request $request, $id)
+//    {
+//        $request->validate([
+//            'status' => 'required|in:Pending,Paid,Overdue',
+//        ]);
+//
+//        try {
+//            Invoice::updateStatusById($id, $request->input('status'));
+//            return response()->json(['message' => 'Invoice status updated successfully'], 200);
+//        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+//            return response()->json(['message' => 'Invoice not found'], 404);
+//        }
+//    }
+
+
+
 }

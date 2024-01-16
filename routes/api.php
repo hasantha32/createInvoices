@@ -20,7 +20,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/invoices', [CreateInvoiceController::class, 'store']);
-Route::post('/customers', [CustomerController::class, 'store']);
-Route::get('/customers/{id}', [CustomerController::class, 'getById']);
+Route::post('/invoices/create-invoices', [CreateInvoiceController::class, 'store']);
+Route::post('/add-customers', [CustomerController::class, 'store']);
+Route::get('/get-customers-by-id/{id}', [CustomerController::class, 'getById']);
+Route::put('/invoices/update-invoice-status-by-id/{id}', [CreateInvoiceController::class, 'updateStatus']);
+
 
