@@ -48,9 +48,10 @@
     <div class="invoice-details">
         <p>Invoice Number: {{ $invoice_number }}</p>
         <p>Invoice Date: {{ $date_of_transaction }}</p>
-        <p>Description of Product/Service: {{ $Description_of_product }}</p>
+{{--        <p>Description of Product/Service: {{ $Description_of_product }}</p>--}}
         <p>Quantity: {{ $Quantity }}</p>
-        <p>Transaction Amount: {{ $Transaction_amount }}</p>
+        <p>Transaction Amount: <b>₦{{ $Transaction_amount }}</b></p>
+
     </div>
     <br>
     <p>Download Invoice:</p>

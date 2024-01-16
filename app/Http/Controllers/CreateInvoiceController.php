@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Listeners\CaptureInvoiceEmailContent;
 use App\Mail\InvoiceCreated;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\InvoiceEmail;
 use App\Models\Items;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -93,6 +95,19 @@ class CreateInvoiceController extends Controller
             $message->to($data["email"])
                 ->subject($data["title"]);
         });
+
+
+        // Save invoice emails to the new table
+        InvoiceEmail::create([
+            'invoice_id' => $invoice->id,
+            'recipient_email' => $customer->email,
+            'invoice_number' => $invoice->invoice_number,
+            'first_name' => $customer->first_name,
+            'last_name' => $customer->last_name,
+            'quantity' => $itemCount,
+            'transaction_amount' => $totalFinalCost,
+        ]);
+
 
         return response()->json(['message' => 'Invoice created with items'], 201);
     }
