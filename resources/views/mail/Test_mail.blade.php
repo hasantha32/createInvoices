@@ -49,6 +49,10 @@
         <p>Invoice Number: {{ $invoice_number }}</p>
         <p>Invoice Date: {{ $date_of_transaction }}</p>
 {{--        <p>Description of Product/Service: {{ $Description_of_product }}</p>--}}
+{{--        <p>Description of Product/Service: {{ $Description_of_product ?? 'Not provided' }}</p>--}}
+        @if ($Description_of_product)
+            <p>Description of Product/Service: {{ $Description_of_product }}</p>
+        @endif
         <p>Quantity: {{ $Quantity }}</p>
         <p>Transaction Amount: <b>₦{{ $Transaction_amount }}</b></p>
 
