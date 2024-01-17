@@ -35,6 +35,22 @@
             border-top: 1px solid #ccc;
             padding-top: 10px;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -48,16 +64,45 @@
     <div class="invoice-details">
         <p>Invoice Number: {{ $invoice_number }}</p>
         <p>Invoice Date: {{ $date_of_transaction }}</p>
-{{--        <p>Description of Product/Service: {{ $Description_of_product }}</p>--}}
-{{--        <p>Description of Product/Service: {{ $Description_of_product ?? 'Not provided' }}</p>--}}
         @if ($Description_of_product)
             <p>Description of Product/Service: {{ $Description_of_product }}</p>
         @endif
         <p>Quantity: {{ $Quantity }}</p>
-        <p>Transaction Amount: <b>₦{{ $Transaction_amount }}</b></p>
-
+        <p>Total amount: <b>₦{{ $Transaction_amount }}</b></p>
     </div>
+
+    <h2>Invoice Items:</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Item Wise Discount (%)</th>
+            <th>Unit Price</th>
+            <th>Final Cost</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($items as $item)
+            <tr>
+                <td>{{ $item['item_name'] }}</td>
+                <td>{{ $item['quantity'] }}</td>
+                <td>{{ $item['item_wise_discount'] }}</td>
+                <td>{{ $item['unit_price'] }}</td>
+                <td><b>₦{{ $item['final_cost'] }}</b></td>
+            </tr>
+        @endforeach
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="4">Transaction Amount:</td>
+            <td><b>₦{{ $Transaction_amount }}</b></td>
+        </tr>
+        </tfoot>
+    </table>
+
     <br>
+
     <p>Download Invoice:</p>
     <p>[Attach the invoice or provide a link to download the invoice]</p>
     <br>

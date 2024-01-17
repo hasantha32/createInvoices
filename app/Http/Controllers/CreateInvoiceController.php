@@ -63,6 +63,16 @@ class CreateInvoiceController extends Controller
 
             $item->final_cost = $finalCost;
 
+            // Save item details to array
+            $itemsDetails[] = [
+                'item_name' => $itemData['item_name'],
+                'quantity' => $itemData['quantity'],
+                'item_wise_discount' => $itemData['item_wise_discount'],
+                'unit_price' => $itemData['unit_price'],
+                'final_cost' => $finalCost,
+            ];
+
+
             // Add the final cost of the items to the total final cost for the invoice
             $totalFinalCost += $finalCost;
 //            dump($totalFinalCost);
@@ -91,7 +101,8 @@ class CreateInvoiceController extends Controller
         $data["invoice_title"] = $invoice->invoice_title;
         $data["Description_of_product"] = $invoice->additional_note;
 
-        Mail::send('mail.Test_mail', $data, function($message) use ($data) {
+        $data["items"] = $itemsDetails; // Pass items details to the email template
+        Mail::send('mail.Test_mail', $data, function ($message) use ($data) {
             $message->to($data["email"])
                 ->subject($data["title"]);
         });
