@@ -19,6 +19,11 @@ class CreateCustomersTable extends Migration
             $table->string('last_name');
             $table->string('email')->unique();
             $table->string('mobile');
+
+            //blacklist the user
+            $table->boolean('blacklisted')->default(false);
+            $table->string('blacklist_reason_add')->nullable();
+            $table->string('blacklist_reason_remove')->nullable();
             $table->timestamps();
         });
     }

@@ -34,4 +34,41 @@ class CustomerController extends Controller
         }
         return response()->json($customer);
     }
+
+
+    public function addToBlacklist($id, Request $request)
+    {
+        $user = Customer::findOrFail($id);
+        $user->blacklisted = true;
+        $user->blacklist_reason_add = $request->input('reason');
+        $user->save();
+
+        return response()->json(['message' => 'User added to blacklist successfully']);
+    }
+
+    public function removeFromBlacklist($id, Request $request)
+    {
+        $user = Customer::findOrFail($id);
+
+        // Check if a reason is provided in the request, and update the reason if available
+        if ($request->has('reason')) {
+            $user->blacklist_reason_remove = $request->input('reason');
+        }
+
+        $user->blacklisted = false;
+        $user->save();
+
+        return response()->json(['message' => 'User removed from blacklist successfully']);
+    }
+
+    public function getBlacklistStatus($id)
+    {
+        $user = Customer::findOrFail($id);
+
+        return response()->json([
+            'blacklisted' => $user->blacklisted,
+            'blacklist_reason_add' => $user->blacklist_reason_add,
+            'blacklist_reason_remove' => $user->blacklist_reason_remove,
+        ]);
+    }
 }

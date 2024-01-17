@@ -25,4 +25,8 @@ Route::post('/add-customers', [CustomerController::class, 'store']);
 Route::get('/get-customers-by-id/{id}', [CustomerController::class, 'getById']);
 Route::put('/invoices/update-invoice-status-by-id/{id}', [CreateInvoiceController::class, 'updateStatus']);
 
+Route::post('/user/blacklist/{id}', [CustomerController::class, 'addToBlacklist']);
+Route::post('/user/remove-blacklist/{id}', [CustomerController::class, 'removeFromBlacklist']);
+Route::get('/user/blacklist-status/{id}', [CustomerController::class, 'getBlacklistStatus']);
+
 
