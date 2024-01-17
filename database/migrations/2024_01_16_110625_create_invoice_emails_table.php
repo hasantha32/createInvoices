@@ -22,6 +22,7 @@ class CreateInvoiceEmailsTable extends Migration
             $table->string('last_name');
             $table->integer('quantity');
             $table->string('transaction_amount');
+            $table->string('additional_note')->nullable();
             $table->timestamps();
         });
     }

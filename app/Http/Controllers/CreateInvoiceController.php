@@ -106,6 +106,7 @@ class CreateInvoiceController extends Controller
             'last_name' => $customer->last_name,
             'quantity' => $itemCount,
             'transaction_amount' => $totalFinalCost,
+            'additional_note' => $invoice->additional_note,
         ]);
 
 

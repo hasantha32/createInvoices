@@ -9,7 +9,7 @@ class InvoiceEmail extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['invoice_id', 'recipient_email', 'email_content','invoice_number','first_name','first_name','last_name','quantity','transaction_amount'];
+    protected $fillable = ['invoice_id', 'recipient_email', 'email_content','invoice_number','first_name','first_name','last_name','quantity','transaction_amount','additional_note'];
 
 
     public function invoice()
