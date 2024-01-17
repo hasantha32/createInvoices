@@ -71,4 +71,28 @@ class CustomerController extends Controller
             'blacklist_reason_remove' => $user->blacklist_reason_remove,
         ]);
     }
+
+    //get all customers
+    public function getAllCustomers()
+    {
+        $customers = Customer::all();
+
+        return response()->json($customers);
+    }
+
+    //get all blacklisted customers
+    public function getAllBlacklistedCustomers()
+    {
+        $blacklistedCustomers = Customer::where('blacklisted', true)->get();
+
+        return response()->json($blacklistedCustomers);
+    }
+
+    //get all non blacklisted customers
+    public function getAllNonBlacklistedCustomers()
+    {
+        $nonBlacklistedCustomers = Customer::where('blacklisted', false)->get();
+
+        return response()->json($nonBlacklistedCustomers);
+    }
 }
