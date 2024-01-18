@@ -19,22 +19,9 @@ class CreateInvoiceController extends Controller
     public function store(Request $request)
     {
         // Validate incoming request data
-        $data = $request->validate([
-            'invoice_title' => 'required|string',
-            'invoice_number' => 'required|integer',
-            'due_date' => 'required|string',
-            'additional_note' => 'nullable|string',//additional_not can be null
-            'status' => 'string', // Remove 'required'
-//            'status' => 'required|string',
-            'items' => 'required|array|min:1', // Validate items as an array and at least one item
-            'items.*.item_name' => 'required|string',
-            'items.*.quantity' => 'required|integer',
-            'items.*.item_wise_discount' => 'required|integer',
-            'items.*.unit_price' => 'required|string',
-//customer
-            'customer_id' => 'required|exists:customers,id',
+      $data = $request->all();
 
-        ]);
+
         $totalFinalCost = 0;
         $status='Pending';
         $itemCount=0;
@@ -127,9 +114,7 @@ class CreateInvoiceController extends Controller
     //update the status
     public function updateStatus(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|in:Pending,Overdue,Paid',
-        ]);
+            $request->all();
 
         $affectedRows = Invoice::where('id', $id)
             ->update(['status' => $request->input('status')]);
