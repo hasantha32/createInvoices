@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Customer\CustomerRequest;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
@@ -10,14 +11,9 @@ class CustomerController extends Controller
 {
     //
 
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
-        $data = $request->validate([
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
-            'email' => 'required|email|unique:customers',
-            'mobile' => 'required|string',
-        ]);
+        $data = $request->all();
 
         $customer = Customer::create($data);
 
