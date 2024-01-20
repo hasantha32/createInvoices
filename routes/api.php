@@ -30,8 +30,9 @@ Route::post('/user/remove-blacklist/{id}', [CustomerController::class, 'removeFr
 Route::get('/user/blacklist-status/{id}', [CustomerController::class, 'getBlacklistStatus']);
 
 Route::get('/get-all-customers', [CustomerController::class, 'getAllCustomers']);
-Route::get('/get-all-blacklisted-customers', [CustomerController::class, 'getAllBlacklistedCustomers']);
-Route::get('/get-all-non-blacklisted-customers', [CustomerController::class, 'getAllNonBlacklistedCustomers']);
+//Route::get('/get-all-blacklisted-customers', [CustomerController::class, 'getAllBlacklistedCustomers']);
+//Route::get('/get-all-non-blacklisted-customers', [CustomerController::class, 'getAllNonBlacklistedCustomers']);
+Route::get('/get-all-customers-filter-by-blacklist', [CustomerController::class, 'getCustomersFilterByBlacklistORNot']);
 
 
 

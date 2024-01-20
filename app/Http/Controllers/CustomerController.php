@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerRequest;
 use App\Models\Customer;
+use App\Models\MerchantUser;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -77,18 +79,37 @@ class CustomerController extends Controller
     }
 
     //get all blacklisted customers
-    public function getAllBlacklistedCustomers()
+//    public function getAllBlacklistedCustomers()
+//    {
+//        $blacklistedCustomers = Customer::where('blacklisted', true)->get();
+//
+//        return response()->json($blacklistedCustomers);
+//    }
+//
+//    //get all non blacklisted customers
+//    public function getAllNonBlacklistedCustomers()
+//    {
+//        $nonBlacklistedCustomers = Customer::where('blacklisted', false)->get();
+//
+//        return response()->json($nonBlacklistedCustomers);
+//    }
+    public function getCustomersFilterByBlacklistORNot(Request $request)
     {
-        $blacklistedCustomers = Customer::where('blacklisted', true)->get();
+        $isBlacklisted = $request->query('Blacklist');
 
-        return response()->json($blacklistedCustomers);
-    }
+// Ensure boolean values for the parameters
+        $isBlacklisted = filter_var($isBlacklisted, FILTER_VALIDATE_BOOLEAN);
 
-    //get all non blacklisted customers
-    public function getAllNonBlacklistedCustomers()
-    {
-        $nonBlacklistedCustomers = Customer::where('blacklisted', false)->get();
+// Build the query based on the provided parameters
+        $query = Customer::query();
 
-        return response()->json($nonBlacklistedCustomers);
+        if ($isBlacklisted !== null) {
+            $query->where('blacklisted', $isBlacklisted)->get();
+        }
+
+// Retrieve the customers based on the filtering conditions
+        $customers = $query->get();
+
+        return response()->json($customers);
     }
 }
