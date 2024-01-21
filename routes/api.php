@@ -33,6 +33,7 @@ Route::get('/get-all-customers', [CustomerController::class, 'getAllCustomers'])
 //Route::get('/get-all-blacklisted-customers', [CustomerController::class, 'getAllBlacklistedCustomers']);
 //Route::get('/get-all-non-blacklisted-customers', [CustomerController::class, 'getAllNonBlacklistedCustomers']);
 Route::get('/get-all-customers-filter-by-blacklist', [CustomerController::class, 'getCustomersFilterByBlacklistORNot']);
+Route::put('/customer/update/{id}', [CustomerController::class,'update']);
 
 
 
