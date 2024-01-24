@@ -35,7 +35,7 @@ Route::get('/get-all-customers', [CustomerController::class, 'getAllCustomers'])
 Route::get('/get-all-customers-filter-by-blacklist', [CustomerController::class, 'getCustomersFilterByBlacklistORNot']);
 Route::put('/customer/update/{id}', [CustomerController::class,'update']);
 Route::delete('/customer-delete/{id}', [CustomerController::class,'delete']);
-
+Route::delete('/customer-remove-from-db/{id}', [CustomerController::class,'deleteFromDb']);
 
 
 

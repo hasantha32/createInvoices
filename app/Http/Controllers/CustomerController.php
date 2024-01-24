@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\CustomerRequest;
 use App\Models\Customer;
 use App\Models\MerchantUser;
+use App\Models\Products;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -146,5 +147,17 @@ class CustomerController extends Controller
         $customer->update(['status' => 'deleted']);
         return response()->json(['message' => 'Customer status change to delete status']);
     }
+    public function deleteFromDb(Request $request)
+    {
+        $id = $request->id;
+        $customer = Customer::where('id', $id)->first();
+
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found']);
+        }
+        $customer->delete();
+        return response()->json('Deleted Successfully');
+    }
+
 
 }
