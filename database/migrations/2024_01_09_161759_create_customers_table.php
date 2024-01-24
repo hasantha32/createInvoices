@@ -24,6 +24,7 @@ class CreateCustomersTable extends Migration
             $table->boolean('blacklisted')->default(false);
             $table->string('blacklist_reason_add')->nullable();
             $table->string('blacklist_reason_remove')->nullable();
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

@@ -133,4 +133,18 @@ class CustomerController extends Controller
         return response()->json(['message' => 'Customer updated successfully', 'customer' => $customer], 201);
     }
 
+    //delete customer by id
+    public function delete($id)
+    {
+        $customer = Customer::where('id', $id)->first();
+//        dd($customer);
+        // Check if the customer exists
+        if (!$customer) {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+        // Update the customer status to 'deleted'
+        $customer->update(['status' => 'deleted']);
+        return response()->json(['message' => 'Customer status change to delete status']);
+    }
+
 }
