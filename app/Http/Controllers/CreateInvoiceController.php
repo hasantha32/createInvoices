@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendInvoiceEmail;
 use App\Listeners\CaptureInvoiceEmailContent;
 use App\Mail\InvoiceCreated;
 use App\Models\Customer;
@@ -89,11 +90,15 @@ class CreateInvoiceController extends Controller
         $data["Description_of_product"] = $invoice->additional_note;
 
         $data["items"] = $itemsDetails; // Pass items details to the email template
-        Mail::send('mail.Test_mail', $data, function ($message) use ($data) {
-            $message->to($data["email"])
-                ->subject($data["title"]);
-        });
 
+        //send the mail without using jobs & queues
+//        Mail::send('mail.Test_mail', $data, function ($message) use ($data) {
+//            $message->to($data["email"])
+//                ->subject($data["title"]);
+//        });
+
+        //sending mail using jobs and queues
+        SendInvoiceEmail::dispatch($data);
 
         // Save invoice emails to the new table
         InvoiceEmail::create([

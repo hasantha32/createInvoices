@@ -147,6 +147,7 @@ class CustomerController extends Controller
         $customer->update(['status' => 'deleted']);
         return response()->json(['message' => 'Customer status change to delete status']);
     }
+    //remove customer from db
     public function deleteFromDb(Request $request)
     {
         $id = $request->id;
