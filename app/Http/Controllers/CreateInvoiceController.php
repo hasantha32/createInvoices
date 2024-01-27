@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApiResponse;
 use App\Jobs\SendInvoiceEmail;
 use App\Listeners\CaptureInvoiceEmailContent;
 use App\Mail\InvoiceCreated;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\InvoiceCustomers;
 use App\Models\InvoiceEmail;
 use App\Models\Items;
+use App\Models\MerchantUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -165,6 +169,14 @@ class CreateInvoiceController extends Controller
 //        }
 //    }
 
-
-
+    public function getAllInvoices()
+    {
+//        $invoices = Invoice::all();
+        $invoices = DB::table('invoices')
+            ->paginate(10);
+        if (!$invoices) {
+            return response()->json(['message' => 'Invoice not found'], 404);
+        }
+        return response()->json($invoices);
+    }
 }
