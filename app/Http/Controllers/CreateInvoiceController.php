@@ -12,6 +12,7 @@ use App\Models\InvoiceCustomers;
 use App\Models\InvoiceEmail;
 use App\Models\Items;
 use App\Models\MerchantUser;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -118,6 +119,34 @@ class CreateInvoiceController extends Controller
 
 
         return response()->json(['message' => 'Invoice created with items'], 201);
+    }
+
+    public function sendReminderForInvoices($customer_id)
+    {
+
+        $invoice = Invoice::find($customer_id);
+        $customer = Customer::find($customer_id);
+
+        $dueDateString = $invoice->due_date;
+        $dueDate = new DateTime($dueDateString);
+        $currentDate = new DateTime();
+        $remainingDays = $dueDate->diff($currentDate)->days;
+        $data["remaining_days"] = $remainingDays;
+
+        $data["title"] = "Friendly Reminder: Invoice #" .$invoice->invoice_number;
+        $data["email"] = $customer->email;
+        $data["customer_name"] =$customer->first_name;
+        $data["invoiceNumber"] = $invoice->invoice_number;
+        $data["invoiceDate"] = $invoice->created_at;
+        $data["dueDate"] = $invoice->due_date;
+        $data["totalFinalCost"] =$invoice->totalFinalCost;
+
+        Mail::send('mail.invoice-reminder', $data, function ($message) use ($data) {
+            $message->to($data["email"])
+                ->subject($data["title"]);
+        });
+
+        return response()->json(['message' => 'Invoice reminder to the customer'], 201);
     }
 
     //update the status
