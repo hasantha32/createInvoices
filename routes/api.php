@@ -26,6 +26,8 @@ Route::get('/get-customers-by-id/{id}', [CustomerController::class, 'getById']);
 Route::put('/invoices/update-invoice-status-by-id/{id}', [CreateInvoiceController::class, 'updateStatus']);
 Route::get('/get-all-invoices', [CreateInvoiceController::class, 'getAllInvoices']);
 Route::get('/send-reminder-for-invoices/{customer_id}', [CreateInvoiceController::class, 'sendReminderForInvoices']);
+Route::post('/get-all-invoices-filter-by-active-or-inactive', [CreateInvoiceController::class, 'getInvoicesFilterByActiveORInactive']);
+
 
 Route::post('/user/blacklist/{id}', [CustomerController::class, 'addToBlacklist']);
 Route::post('/user/remove-blacklist/{id}', [CustomerController::class, 'removeFromBlacklist']);

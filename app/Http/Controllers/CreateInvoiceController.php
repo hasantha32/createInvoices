@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
+use App\Helpers\ResponseCodes;
 use App\Jobs\SendInvoiceEmail;
 use App\Listeners\CaptureInvoiceEmailContent;
 use App\Mail\InvoiceCreated;
@@ -13,8 +14,10 @@ use App\Models\InvoiceEmail;
 use App\Models\Items;
 use App\Models\MerchantUser;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -198,14 +201,65 @@ class CreateInvoiceController extends Controller
 //        }
 //    }
 
-    public function getAllInvoices()
+
+
+
+
+
+
+
+
+
+//    public function getAllInvoices()
+//    {
+////        $invoices = Invoice::all();
+//        $invoices = DB::table('invoices')
+//            ->paginate(10);
+//        if (!$invoices) {
+//            return response()->json(['message' => 'Invoice not found'], 404);
+//        }
+//        return response()->json($invoices);
+//    }
+
+// Get invoices (all,active,inactive)
+    public function getInvoicesFilterByActiveORInactive(Request $request)
     {
-//        $invoices = Invoice::all();
-        $invoices = DB::table('invoices')
-            ->paginate(10);
-        if (!$invoices) {
+        try {
+            $start = "===== InvoiceRetrieve START ======";
+            $end = "===== InvoiceRetrieve END ======";
+            log::info($start);
+
+
+            $invoices = DB::table('invoices')
+                ->join('customers', 'invoices.customer_id', '=', 'customers.id')
+//                ->whereIn('invoices.customer_id', $customer)
+                ->select(
+                    'invoices.*',
+                    DB::raw("CONCAT(customers.first_name, ' ', customers.last_name) AS customer_full_name"),
+                    'invoices.status AS invoice_status'
+                )
+                ->when($request->input('status'), function ($query, $status) {
+                    $query->where('invoices.status', $status);
+                })
+                ->when($request->input('date_issued'), function ($query, $date_issued) {
+                    $query->whereDate('invoices.created_at', $date_issued);
+                })
+                ->when($request->input('invoice_number'), function ($query, $invoice_number) {
+                    $query->where('invoices.invoice_number', $invoice_number);
+                })
+                ->when($request->input('invoice_customer'), function ($query, $invoice_customer) {
+                    $query->where('invoices.customer_id', $invoice_customer);
+                })
+                ->paginate($request->input('itemsPerPage', 10));
+
+            log::info($end);
+            return response()->json($invoices);
+
+        } catch (Exception $e) {
+            Log::error('Exception: ' . $e->getMessage(), ['exception' => $e]);
+            log::info($end);
             return response()->json(['message' => 'Invoice not found'], 404);
         }
-        return response()->json($invoices);
+
     }
 }
